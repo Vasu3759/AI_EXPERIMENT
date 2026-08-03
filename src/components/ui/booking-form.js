@@ -17,20 +17,28 @@ export function BookingForm() {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/submit', {
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfV2U6qyWcZzHFESdUn0hGKzfba-MWWrR53Sot2YOpd0J6tFQ/formResponse";
+      const formData = new URLSearchParams();
+      formData.append("entry.727289475", data.fullName || "");
+      formData.append("entry.611921212", data.phone || "");
+      formData.append("entry.927057652", data.email || "");
+      formData.append("entry.1814520198", data.institute || "");
+      formData.append("entry.735463707", data.designation || "");
+      formData.append("entry.2025212453", data.message || "");
+
+      // Use mode: 'no-cors' to bypass CORS restrictions directly from the browser
+      await fetch(formUrl, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(data),
+        body: formData.toString(),
       });
       
-      if (response.ok) {
-        setIsSuccess(true);
-      } else {
-        console.error("Submission failed");
-        // In a real app, you might want to show an error toast here
-      }
+      // With no-cors, the response is opaque, meaning we can't read response.ok
+      // We just assume success if it didn't throw a network error
+      setIsSuccess(true);
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
