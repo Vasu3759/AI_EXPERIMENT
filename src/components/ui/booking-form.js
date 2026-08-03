@@ -1,0 +1,164 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
+export function BookingForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      
+      if (response.ok) {
+        setIsSuccess(true);
+      } else {
+        console.error("Submission failed");
+        // In a real app, you might want to show an error toast here
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="bg-secondary/30 border border-border backdrop-blur-md rounded-3xl p-5 md:p-6 shadow-2xl relative overflow-hidden w-full max-w-[500px] mx-auto">
+      <AnimatePresence mode="wait">
+        {!isSuccess ? (
+          <motion.div
+            key="form"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="mb-4">
+              <h3 className="text-xl font-bold text-foreground">Book Your Demo</h3>
+              <p className="text-xs text-muted-foreground mt-1">Fill out the details below and we&apos;ll be in touch shortly.</p>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Full Name *</label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    {...register("fullName", { required: "Name is required" })} 
+                    className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.fullName ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Phone Number *</label>
+                  <Input 
+                    placeholder="Enter phone number" 
+                    type="tel"
+                    {...register("phone", { required: "Phone number is required" })} 
+                    className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Email Address *</label>
+                <Input 
+                  placeholder="Enter email address" 
+                  type="email"
+                  {...register("email", { 
+                    required: "Email is required",
+                    pattern: { value: /\S+@\S+\.\S+/, message: "Invalid email address" }
+                  })} 
+                  className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Institution Name *</label>
+                  <Input 
+                    placeholder="Enter institution name" 
+                    {...register("institute", { required: "Institution name is required" })} 
+                    className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.institute ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Designation *</label>
+                  <Input 
+                    placeholder="Enter your designation" 
+                    {...register("designation", { required: "Designation is required" })} 
+                    className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.designation ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Message</label>
+                <Textarea 
+                  placeholder="Enter your message" 
+                  {...register("message")} 
+                  className="h-14 min-h-[56px] resize-none bg-background border-border text-foreground placeholder:text-muted-foreground text-sm"
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                size="lg" 
+                className="w-full mt-1 h-10 text-sm font-bold bg-primary text-white hover:bg-primary/90 transition-colors"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  "Book My Free Demo"
+                )}
+              </Button>
+            </form>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-col items-center justify-center text-center py-12 h-full min-h-[300px]"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
+              className="w-20 h-20 bg-primary/20 text-primary rounded-full flex items-center justify-center mb-6"
+            >
+              <CheckCircle2 size={40} />
+            </motion.div>
+            <h3 className="text-2xl font-bold text-foreground mb-4">Awesome!</h3>
+            <p className="text-md text-muted-foreground mb-8 max-w-sm">
+              Your demo request has been received. Our team will contact you shortly.
+            </p>
+            <Button variant="outline" onClick={() => setIsSuccess(false)} className="border-border hover:bg-secondary">
+              Submit Another Request
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
