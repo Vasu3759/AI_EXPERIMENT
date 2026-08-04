@@ -40,16 +40,16 @@ const Navbar = () => {
       >
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
+          <a href="https://chalksnboard.in/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
             <img 
               src="https://chalksnboard.in/brandlogo.jpg" 
               alt="ChalksNBoard Logo" 
               className="h-10 w-auto object-contain rounded-lg"
             />
-            <span className="font-black text-xl tracking-tighter text-white hidden sm:block">
+            <span className="font-black text-xl tracking-tighter text-white">
               CHALKS<span className="text-primary drop-shadow-md">N</span>BOARD
             </span>
-          </Link>
+          </a>
 
           {/* Right Section */}
           <div className="flex items-center gap-2 md:gap-4">

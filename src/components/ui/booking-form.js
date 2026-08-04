@@ -22,7 +22,9 @@ export function BookingForm() {
       formData.append("entry.727289475", data.fullName || "");
       formData.append("entry.611921212", data.phone || "");
       formData.append("entry.927057652", data.email || "");
-      formData.append("entry.1814520198", data.institute || "");
+      formData.append("entry.1814520198", data.city || "");
+      formData.append("entry.1814520199", data.state || "");
+      formData.append("entry.1814520200", data.institute || "");
       formData.append("entry.735463707", data.designation || "");
       formData.append("entry.2025212453", data.message || "");
 
@@ -39,6 +41,10 @@ export function BookingForm() {
       // With no-cors, the response is opaque, meaning we can't read response.ok
       // We just assume success if it didn't throw a network error
       setIsSuccess(true);
+      // Fire Google Ads conversion for form submission
+      if (typeof gtag_report_conversion === "function") {
+        gtag_report_conversion();
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -98,6 +104,25 @@ export function BookingForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">City *</label>
+                  <Input 
+                    placeholder="Enter city" 
+                    {...register("city", { required: "City is required" })} 
+                    className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.city ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">State *</label>
+                  <Input 
+                    placeholder="Enter state" 
+                    {...register("state", { required: "State is required" })} 
+                    className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.state ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
                   <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Institution Name *</label>
                   <Input 
                     placeholder="Enter institution name" 
@@ -106,22 +131,37 @@ export function BookingForm() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Designation *</label>
-                  <Input 
-                    placeholder="Enter your designation" 
-                    {...register("designation", { required: "Designation is required" })} 
-                    className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.designation ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-                  />
+                  <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">What is your role at School? *</label>
+                  <select 
+                    {...register("designation", { required: "Role is required" })} 
+                    defaultValue=""
+                    className={`flex w-full rounded-lg border px-3 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:border-transparent transition-all h-9 bg-background border-border text-foreground text-sm ${errors.designation ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                  >
+                    <option value="" disabled hidden>Select your role</option>
+                    <option value="School Owner">School Owner</option>
+                    <option value="Principal">Principal</option>
+                    <option value="Management/Trustee">Management/Trustee</option>
+                    <option value="Director">Director</option>
+                    <option value="Vice Principal">Vice Principal</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Message</label>
-                <Textarea 
-                  placeholder="Enter your message" 
-                  {...register("message")} 
-                  className="h-14 min-h-[56px] resize-none bg-background border-border text-foreground placeholder:text-muted-foreground text-sm"
-                />
+                <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Your Monthly Marketing Budget? *</label>
+                <select 
+                  {...register("message", { required: "Budget is required" })} 
+                  defaultValue=""
+                  className={`flex w-full rounded-lg border px-3 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:border-transparent transition-all h-9 bg-background border-border text-foreground text-sm ${errors.message ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                >
+                  <option value="" disabled hidden>Select budget</option>
+                  <option value="50,000">50,000</option>
+                  <option value="1 Lakh">1 Lakh</option>
+                  <option value="1.5 Lakh">1.5 Lakh</option>
+                  <option value="2 Lakh">2 Lakh</option>
+                  <option value="Above 2 Lakh">Above 2 Lakh</option>
+                </select>
               </div>
 
               <Button 
