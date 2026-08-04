@@ -46,30 +46,37 @@ const Navbar = () => {
               alt="ChalksNBoard Logo" 
               className="h-10 w-auto object-contain rounded-lg"
             />
-            <span className="font-black text-xl tracking-tighter text-white">
+            <span className="font-black text-xl tracking-tighter text-white hidden sm:block">
               CHALKS<span className="text-primary drop-shadow-md">N</span>BOARD
             </span>
           </Link>
 
-          {/* CTA Button */}
-          <div className="hidden md:flex items-center gap-4">
-            <Link href="#services" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              Solutions
-            </Link>
-            <Link href="#demo">
-              <Button size="sm" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-full px-6">
-                Book Demo
-              </Button>
-            </Link>
-          </div>
+          {/* Right Section */}
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Desktop Links */}
+            <div className="hidden md:flex items-center gap-4 mr-2">
+              <Link href="#services" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                Solutions
+              </Link>
+            </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden flex items-center justify-center p-2 text-muted-foreground hover:text-foreground"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+            {/* Desktop CTA */}
+            <div className="hidden md:block">
+              <Link href="#demo">
+                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 font-bold rounded-full px-6">
+                  Book Demo
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              className="md:hidden flex items-center justify-center p-2 text-muted-foreground hover:text-foreground"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
