@@ -1,0 +1,60 @@
+# Deployment Documentation for AI_EXPERIMEN_cnblandingpage
+
+This document tracks the commands used to set up and deploy the Next.js static site on the AWS EC2 instance.
+
+## Initial Server Setup
+
+These are the commands run on the EC2 server (Amazon Linux 2/2023) to deploy the site for the very first time.
+
+1. **Clone the Repository & Navigate to It**
+   ```bash
+   git clone git@github.com:ChalksnboardProduction/AI_EXPERIMEN_cnblandingpage.git
+   cd ~/AI_EXPERIMEN_cnblandingpage
+   ```
+
+2. **Run the Deployment Script (Build the Site)**
+   ```bash
+   chmod +x deploy.sh
+   ./deploy.sh
+   ```
+   *(This installs dependencies via `npm install` and generates the static site in the `out` folder via `npm run build`.)*
+
+3. **Configure Nginx**
+   The Nginx configuration file was copied to the `conf.d` directory to serve the static files:
+   ```bash
+   sudo cp nginx-aipowered.conf /etc/nginx/conf.d/aipowered.chalksnboard.in.conf
+   sudo nginx -t
+   sudo systemctl reload nginx
+   ```
+
+4. **Enable SSL (HTTPS)**
+   Certbot was used to generate an SSL certificate for the domain:
+   ```bash
+   sudo certbot --nginx -d aipowered.chalksnboard.in
+   ```
+
+---
+
+## How to Deploy Future Changes
+
+When new code is pushed to the `main` branch on GitHub, follow these exact steps on the EC2 instance to deploy the updates:
+
+1. **Navigate to the project folder:**
+   ```bash
+   cd ~/AI_EXPERIMEN_cnblandingpage
+   ```
+
+2. **Pull the latest code from GitHub:**
+   ```bash
+   git stash                 # Only needed if you have local modifications preventing a pull
+   git pull origin main
+   ```
+
+3. **Rebuild the application:**
+   ```bash
+   ./deploy.sh
+   ```
+
+Because Nginx directly serves the `out` directory, any changes will instantly go live once `./deploy.sh` finishes generating the new static files. There is no need to restart Nginx for standard code updates.
+
+*(Note: You may need to perform a hard refresh in your browser to see the latest changes due to caching).*
