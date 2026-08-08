@@ -2,7 +2,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import FloatingContact from "@/components/layout/FloatingContact";
 import Script from "next/script";
 
 const geistSans = Geist({
@@ -157,7 +156,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
-        <FloatingContact />
       </body>
     </html>
   );
