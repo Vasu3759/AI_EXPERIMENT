@@ -81,11 +81,21 @@ export function BookingForm() {
                 <div className="space-y-1">
                   <label className="text-[11px] font-medium text-foreground uppercase tracking-wider">Phone Number *</label>
                   <Input 
-                    placeholder="Enter phone number" 
+                    placeholder="Enter 10-digit number" 
                     type="tel"
-                    {...register("phone", { required: "Phone number is required" })} 
+                    maxLength={10}
+                    {...register("phone", { 
+                      required: "Phone number is required",
+                      pattern: {
+                        value: /^[0-9]{10}$/,
+                        message: "Must be exactly 10 digits"
+                      }
+                    })} 
                     className={`h-9 bg-background border-border text-foreground placeholder:text-muted-foreground text-sm ${errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                   />
+                  {errors.phone && (
+                    <span className="text-[10px] text-red-500 font-semibold block">{errors.phone.message}</span>
+                  )}
                 </div>
               </div>
 

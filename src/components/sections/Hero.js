@@ -8,7 +8,7 @@ import { BookingForm } from "@/components/ui/booking-form";
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden pt-32 pb-20">
+    <section id="home" className="relative bg-background overflow-hidden pt-32 pb-6">
       {/* Background Orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-primary/10 rounded-full blur-[120px] -translate-y-1/4 translate-x-1/4"></div>
