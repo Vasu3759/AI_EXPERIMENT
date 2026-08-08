@@ -103,13 +103,8 @@ export default function RootLayout({ children }) {
             window.gtag_report_conversion = gtag_report_conversion;
           `}
         </Script>
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col font-sans`}
-      >
-        <Script
+        <script
           id="meta-pixel"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -125,6 +120,10 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col font-sans`}
+      >
         <noscript>
           <img
             height="1"
